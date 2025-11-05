@@ -1,0 +1,58 @@
+{
+  "Version": 1,
+  "Hash": "PO+5gJ4ROdjON38NTNIfHpywpNhY81DVtjThmojErpw=",
+  "Source": "ClinicaMVC",
+  "BasePath": "_content/ClinicaMVC",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "ClinicaMVC\\wwwroot",
+      "Source": "ClinicaMVC",
+      "ContentRoot": "C:\\Users\\agual\\OneDrive\\Escritorio\\ClinicaMVC\\wwwroot\\",
+      "BasePath": "_content/ClinicaMVC",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\agual\\OneDrive\\Escritorio\\ClinicaMVC\\wwwroot\\css\\site.css",
+      "SourceId": "ClinicaMVC",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\agual\\OneDrive\\Escritorio\\ClinicaMVC\\wwwroot\\",
+      "BasePath": "_content/ClinicaMVC",
+      "RelativePath": "css/site.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\site.css"
+    },
+    {
+      "Identity": "C:\\Users\\agual\\OneDrive\\Escritorio\\ClinicaMVC\\wwwroot\\js\\site.js",
+      "SourceId": "ClinicaMVC",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\agual\\OneDrive\\Escritorio\\ClinicaMVC\\wwwroot\\",
+      "BasePath": "_content/ClinicaMVC",
+      "RelativePath": "js/site.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\site.js"
+    }
+  ]
+}

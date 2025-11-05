@@ -1,0 +1,140 @@
+@model IEnumerable<ClinicaMVC.Models.Doctor>
+
+@{
+    ViewData["Title"] = "Gestión de Doctores";
+}
+
+<style>
+    body { font-family: system-ui, sans-serif; background-color: #f8f9fa; }
+    header { background:#0052cc; color:white; padding:12px 16px; font-size:20px; font-weight:600;}
+    main { max-width:1100px; margin:24px auto; background:white; padding:24px; border-radius:8px; box-shadow:0 8px 24px rgba(0,0,0,.07); }
+    h2 { margin:0 0 16px 0; font-size:28px; font-weight:600; color:#1a1a1a; }
+    .form-row { display:flex; flex-wrap:wrap; gap:12px; margin-bottom:16px; }
+    .form-row input,
+    .form-row select { padding:10px 12px; border:1px solid #ccc; border-radius:6px; font-size:15px; min-width:180px; }
+    .btn-primary {
+        background:#0052cc; border:0; color:white; padding:10px 14px;
+        font-size:15px; border-radius:6px; cursor:pointer; font-weight:600;
+    }
+    .btn-primary:hover { background:#003d99; }
+    table { width:100%; border-collapse:collapse; margin-top:16px; font-size:15px; }
+    th { background:#f1f3f5; text-align:left; padding:10px; border-bottom:2px solid #dee2e6; font-weight:600; color:#1a1a1a; font-size:14px; text-transform:uppercase; }
+    td { padding:10px; border-bottom:1px solid #e9ecef; color:#1a1a1a; }
+    .estado-ok { color:#007f00; font-weight:600; }
+</style>
+
+<header>Clínica - Doctores</header>
+
+<main>
+    <h2>Gestión de Doctores</h2>
+
+    <div class="form-row">
+        <input id="nombreDoctor" placeholder="Nombre" />
+        <input id="apellidosDoctor" placeholder="Apellidos" />
+        <input id="emailDoctor" placeholder="Email" />
+        <input id="edadDoctor" type="number" placeholder="Edad" style="width:80px;" />
+
+        <select id="estadoDoctor">
+            <option value="ACTIVO">Activo</option>
+            <option value="INACTIVO">Inactivo</option>
+        </select>
+
+        <select id="especialidadId">
+            <option value="1">Medicina General</option>
+            <option value="2">Pediatría</option>
+            <option value="3">Odontología</option>
+        </select>
+
+        <button id="btnGuardar" class="btn-primary">Guardar Doctor</button>
+    </div>
+
+    <table id="tablaDoctores">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Email</th>
+                <th>Edad</th>
+                <th>Estado</th>
+                <th>Especialidad</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var d in Model)
+        {
+            <tr>
+                <td>@d.IdDoctor</td>
+                <td>@d.NombreDoctor</td>
+                <td>@d.ApellidosDoctor</td>
+                <td>@d.EmailDoctor</td>
+                <td>@d.EdadDoctor</td>
+                <td class="@(d.EstadoDoctor == "ACTIVO" ? "estado-ok" : "")">
+                    @d.EstadoDoctor
+                </td>
+                <td>@(d.FkIdEspecialidad != null ? d.FkIdEspecialidad.NombreEspecialidad : "-")</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</main>
+
+<script>
+    const btnGuardar = document.getElementById("btnGuardar");
+
+    btnGuardar.addEventListener("click", async () => {
+        // 1. Armar JSON EXACTO que la API Java acepta
+        const payload = {
+            nombreDoctor: document.getElementById("nombreDoctor").value,
+            apellidosDoctor: document.getElementById("apellidosDoctor").value,
+            emailDoctor: document.getElementById("emailDoctor").value,
+            edadDoctor: parseInt(document.getElementById("edadDoctor").value),
+            estadoDoctor: document.getElementById("estadoDoctor").value,
+            fkIdEspecialidad: {
+                idEspecialidad: parseInt(document.getElementById("especialidadId").value)
+            }
+        };
+
+        console.log("→ Enviando al backend MVC/Create este JSON:", payload);
+
+        // 2. Mandar al controlador MVC (no directo a Java)
+        const res = await fetch("/Doctores/Create", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
+
+        // 3. Leer respuesta que devuelva el controlador
+        const data = await res.json();
+        console.log("↳ Respuesta cruda del MVC/Create:", data);
+
+        if (data.ok) {
+            // refrescar tabla con la lista que regresa el backend
+            actualizarTabla(data.doctores);
+            alert("✅ Guardado con éxito");
+        } else {
+            alert("❌ Error al guardar.\n\n" + JSON.stringify(data, null, 2));
+        }
+    });
+
+    function actualizarTabla(doctores) {
+        const tbody = document.querySelector("#tablaDoctores tbody");
+        tbody.innerHTML = "";
+
+        doctores.forEach(d => {
+            tbody.innerHTML += `
+                <tr>
+                    <td>${d.idDoctor}</td>
+                    <td>${d.nombreDoctor}</td>
+                    <td>${d.apellidosDoctor}</td>
+                    <td>${d.emailDoctor}</td>
+                    <td>${d.edadDoctor}</td>
+                    <td class="${d.estadoDoctor === "ACTIVO" ? "estado-ok" : ""}">
+                        ${d.estadoDoctor}
+                    </td>
+                    <td>${d.fkIdEspecialidad ? d.fkIdEspecialidad.nombreEspecialidad : "-"}</td>
+                </tr>
+            `;
+        });
+    }
+</script>
